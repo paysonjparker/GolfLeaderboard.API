@@ -1,4 +1,5 @@
-﻿using GolfLeaderboard.API.Data;
+﻿using GolfLeaderboard.API.Business;
+using GolfLeaderboard.API.Data;
 using GolfLeaderboard.API.Models.DomainModels;
 using GolfLeaderboard.API.Models.DTO.GolfCourseDTO;
 using Microsoft.AspNetCore.Http;
@@ -10,52 +11,25 @@ namespace GolfLeaderboard.API.Controllers
     [ApiController]
     public class GolfCoursesController : ControllerBase
     {
-        private readonly GolfLeaderboardDbContext _dbContext;
+        private GolfCourseService _golfCourseService;
 
         public GolfCoursesController(GolfLeaderboardDbContext dbContext)
         {
-            this._dbContext = dbContext;
+            this._golfCourseService = new GolfCourseService(dbContext);
         }
 
         [HttpPost]
         public IActionResult AddGolfCourse(AddGolfCourseRequest addGolfCourseRequest)
         {
-            // Convert DTO to Domain Model
-            var golfCourse = new Models.DomainModels.GolfCourse
-            {
-                Name = addGolfCourseRequest.Name,
-                Location = addGolfCourseRequest.Location,
-                SlopeRating = addGolfCourseRequest.SlopeRating,
-                CourseRating = addGolfCourseRequest.CourseRating,
-                Yardage = addGolfCourseRequest.Yardage,
-                Par = addGolfCourseRequest.Par,
-            };
+            var createdGolfCourse = _golfCourseService.AddGolfCourse(addGolfCourseRequest);
 
-            _dbContext.GolfCourses.Add(golfCourse);
-            _dbContext.SaveChanges();
-
-            return Ok(golfCourse);
+            return Ok(createdGolfCourse);
         }
 
         [HttpGet]
         public IActionResult GetAllGolfCourses() 
         {
-            var golfCourses = _dbContext.GolfCourses.ToList();
-
-            var golfersDTO = new List<Models.DTO.GolfCourseDTO.GolfCourse>();
-            foreach (var golfCourse in golfCourses)
-            {
-                golfersDTO.Add(new Models.DTO.GolfCourseDTO.GolfCourse
-                {
-                    Id = golfCourse.Id,
-                    Name = golfCourse.Name,
-                    Location = golfCourse.Location,
-                    SlopeRating = golfCourse.SlopeRating,
-                    CourseRating = golfCourse.CourseRating,
-                    Yardage = golfCourse.Yardage,
-                    Par = golfCourse.Par,
-                });
-            }
+            var golfersDTO = _golfCourseService.GetAllGolfCourses();
 
             return Ok(golfersDTO);
         }
@@ -64,20 +38,10 @@ namespace GolfLeaderboard.API.Controllers
         [Route("{id:Guid}")]
         public IActionResult GetGolfCourseById(Guid id)
         {
-            var golfCourseDomainObject = _dbContext.GolfCourses.Find(id);
-
-            if(golfCourseDomainObject != null){
-                var golfCourseDTO = new Models.DTO.GolfCourseDTO.GolfCourse
-                {
-                    Id = golfCourseDomainObject.Id,
-                    Name = golfCourseDomainObject.Name,
-                    Location = golfCourseDomainObject.Location,
-                    SlopeRating = golfCourseDomainObject.SlopeRating,
-                    CourseRating = golfCourseDomainObject.CourseRating,
-                    Yardage = golfCourseDomainObject.Yardage,
-                    Par = golfCourseDomainObject.Par,
-                };
-
+            var golfCourseDTO = _golfCourseService.GetGolfCourseById(id);
+            
+            if(golfCourseDTO != null)
+            {
                 return Ok(golfCourseDTO);
             }
 
@@ -88,18 +52,10 @@ namespace GolfLeaderboard.API.Controllers
         [Route("{id:Guid}")]
         public IActionResult UpdateGolfCourse(Guid id, UpdateGolfCourseRequest updateGolfCourseRequest)
         {
-            var existingGolfCourse = _dbContext.GolfCourses.Find(id);
+            var existingGolfCourse = _golfCourseService.UpdateGolfCourse(id, updateGolfCourseRequest);
 
             if (existingGolfCourse != null)
             {
-                existingGolfCourse.Name = updateGolfCourseRequest.Name;
-                existingGolfCourse.Location = updateGolfCourseRequest.Location;
-                existingGolfCourse.SlopeRating = updateGolfCourseRequest.SlopeRating;
-                existingGolfCourse.CourseRating = updateGolfCourseRequest.CourseRating;
-                existingGolfCourse.Yardage = updateGolfCourseRequest.Yardage;
-                existingGolfCourse.Par = updateGolfCourseRequest.Par;
-
-                _dbContext.SaveChanges();
                 return Ok(existingGolfCourse);
             }
 
@@ -110,13 +66,10 @@ namespace GolfLeaderboard.API.Controllers
         [Route("{id:Guid}")]
         public IActionResult DeleteGolfCourse(Guid id)
         {
-            var existingGolfCourse = _dbContext.GolfCourses.Find(id);
+            var deletedGolfCourse = _golfCourseService.DeleteGolfCourse(id);
 
-            if (existingGolfCourse != null)
+            if (deletedGolfCourse != false)
             {
-                _dbContext.GolfCourses.Remove(existingGolfCourse);
-                _dbContext.SaveChanges();
-
                 return Ok();
             }
 
