@@ -1,4 +1,5 @@
 ﻿using GolfLeaderboard.API.Data;
+using GolfLeaderboard.API.Models.DomainModels;
 using GolfLeaderboard.API.Models.DTO.GolferDTO;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,6 +33,8 @@ namespace GolfLeaderboard.API.Business
 
         public List<Models.DTO.GolferDTO.Golfer> GetAllGolfers()
         {
+            var scoreService = new ScoreService(_dbContext);
+
             var golfers = _dbContext.Golfers.ToList();
 
             var golfersDTO = new List<Models.DTO.GolferDTO.Golfer>();
@@ -43,7 +46,7 @@ namespace GolfLeaderboard.API.Business
                     Name = golfer.Name,
                     HandicapIndex = golfer.HandicapIndex,
                     HomeCourse = golfer.HomeCourse,
-                    Scores = golfer.Scores,
+                    Scores = scoreService.GetAllScoresByGolfer(golfer.Id),
                 });
             }
 
@@ -52,6 +55,8 @@ namespace GolfLeaderboard.API.Business
 
         public Models.DTO.GolferDTO.Golfer GetGolferById(Guid id)
         {
+            var scoreService = new ScoreService(_dbContext);
+
             var golferDomainObject = _dbContext.Golfers.Find(id);
 
             if (golferDomainObject != null)
@@ -62,7 +67,7 @@ namespace GolfLeaderboard.API.Business
                     Name = golferDomainObject.Name,
                     HandicapIndex = golferDomainObject.HandicapIndex,
                     HomeCourse = golferDomainObject.HomeCourse,
-                    Scores = golferDomainObject.Scores,
+                    Scores = scoreService.GetAllScoresByGolfer(golferDomainObject.Id),
                 };
 
                 return golferDTO;

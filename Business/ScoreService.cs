@@ -19,6 +19,7 @@ namespace GolfLeaderboard.API.Business
             var score = new Models.DomainModels.Score
             {
                 Total = addScoreRequest.Total,
+                GolferId = addScoreRequest.GolferId,
             };
 
             _dbContext.Scores.Add(score);
@@ -38,26 +39,28 @@ namespace GolfLeaderboard.API.Business
                 {
                     Id = score.Id,
                     Total = score.Total,
+                    GolferId = score.GolferId,
                 });
             }
 
             return scoresDTO;
         }
 
-        public List<Models.DTO.ScoreDTO.Score> GetAllScoresByGolfer(Guid golferId)
+        public List<Models.DomainModels.Score> GetAllScoresByGolfer(Guid golferId)
         {
 
             var scores = _dbContext.Scores.ToList();
 
-            var scoresDTO = new List<Models.DTO.ScoreDTO.Score>();
+            var scoresDTO = new List<Models.DomainModels.Score>();
             foreach (var score in scores)
             {
-                if (score.Id == golferId)
+                if (score.GolferId == golferId)
                 {
-                    scoresDTO.Add(new Models.DTO.ScoreDTO.Score
+                    scoresDTO.Add(new Models.DomainModels.Score
                     {
                         Id = score.Id,
                         Total = score.Total,
+                        GolferId = score.GolferId,
                     });
                 }
             }
