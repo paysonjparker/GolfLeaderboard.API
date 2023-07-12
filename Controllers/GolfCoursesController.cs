@@ -48,6 +48,20 @@ namespace GolfLeaderboard.API.Controllers
             return BadRequest();
         }
 
+        [HttpGet]
+        [Route("{golfCourseName}")]
+        public IActionResult GetGolfCourseById(string golfCourseName)
+        {
+            var golfCourseDTO = _golfCourseService.GetGolfCourseByName(golfCourseName);
+
+            if (golfCourseDTO != null)
+            {
+                return Ok(golfCourseDTO);
+            }
+
+            return BadRequest();
+        }
+
         [HttpPut]
         [Route("{id:Guid}")]
         public IActionResult UpdateGolfCourse(Guid id, UpdateGolfCourseRequest updateGolfCourseRequest)

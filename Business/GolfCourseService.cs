@@ -77,6 +77,29 @@ namespace GolfLeaderboard.API.Business
             return null;
         }
 
+        public Models.DTO.GolfCourseDTO.GolfCourse GetGolfCourseByName(string golfCourseName)
+        {
+            var golfCourseDomainObject = _dbContext.GolfCourses.FirstOrDefault(golfCourse => golfCourse.Name.Equals(golfCourseName));
+
+            if (golfCourseDomainObject != null)
+            {
+                var golfCourseDTO = new Models.DTO.GolfCourseDTO.GolfCourse
+                {
+                    Id = golfCourseDomainObject.Id,
+                    Name = golfCourseDomainObject.Name,
+                    Location = golfCourseDomainObject.Location,
+                    SlopeRating = golfCourseDomainObject.SlopeRating,
+                    CourseRating = golfCourseDomainObject.CourseRating,
+                    Yardage = golfCourseDomainObject.Yardage,
+                    Par = golfCourseDomainObject.Par,
+                };
+
+                return golfCourseDTO;
+            }
+
+            return null;
+        }
+
         public Models.DomainModels.GolfCourse UpdateGolfCourse(Guid id, UpdateGolfCourseRequest updateGolfCourseRequest)
         {
             var existingGolfCourse = _dbContext.GolfCourses.Find(id);
