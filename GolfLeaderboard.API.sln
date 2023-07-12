@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33801.468
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GolfLeaderboard.API", "GolfLeaderboard.API.csproj", "{37E7BBCA-17B5-46BC-AD9D-5B80A306F1CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37E7BBCA-17B5-46BC-AD9D-5B80A306F1CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E7BBCA-17B5-46BC-AD9D-5B80A306F1CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37E7BBCA-17B5-46BC-AD9D-5B80A306F1CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37E7BBCA-17B5-46BC-AD9D-5B80A306F1CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07F04CBC-397D-4114-86C3-554F44E39F62}
+	EndGlobalSection
+EndGlobal
