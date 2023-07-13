@@ -16,7 +16,24 @@ builder.Services.AddDbContext<GolfLeaderboardDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GolfLeaderboardConnectionString"));
 });
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularOrigins",
+    builder =>
+    {
+        builder.WithOrigins(
+                            "http://localhost:4200"
+                            )
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+    });
+});
+
+// UseCors
 var app = builder.Build();
+app.UseCors("AllowAngularOrigins");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -2,6 +2,7 @@
 using GolfLeaderboard.API.Data;
 using GolfLeaderboard.API.Models.DTO.GolferDTO;
 using GolfLeaderboard.API.Models.DTO.ScoreDTO;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace GolfLeaderboard.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowAngularOrigins")]
     public class ScoresController : ControllerBase
     {
         private ScoreService _scoreService;

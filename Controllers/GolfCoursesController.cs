@@ -2,6 +2,7 @@
 using GolfLeaderboard.API.Data;
 using GolfLeaderboard.API.Models.DomainModels;
 using GolfLeaderboard.API.Models.DTO.GolfCourseDTO;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace GolfLeaderboard.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowAngularOrigins")]
     public class GolfCoursesController : ControllerBase
     {
         private GolfCourseService _golfCourseService;
@@ -50,7 +52,7 @@ namespace GolfLeaderboard.API.Controllers
 
         [HttpGet]
         [Route("{golfCourseName}")]
-        public IActionResult GetGolfCourseById(string golfCourseName)
+        public IActionResult GetGolfCourseByName(string golfCourseName)
         {
             var golfCourseDTO = _golfCourseService.GetGolfCourseByName(golfCourseName);
 
