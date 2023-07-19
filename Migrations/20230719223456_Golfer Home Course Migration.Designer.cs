@@ -4,6 +4,7 @@ using GolfLeaderboard.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GolfLeaderboard.API.Migrations
 {
     [DbContext(typeof(GolfLeaderboardDbContext))]
-    partial class GolfLeaderboardDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230719223456_Golfer Home Course Migration")]
+    partial class GolferHomeCourseMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,9 +65,8 @@ namespace GolfLeaderboard.API.Migrations
                     b.Property<float>("HandicapIndex")
                         .HasColumnType("real");
 
-                    b.Property<string>("HomeCourse")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("HomeCourseId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("LeaderboardId")
                         .HasColumnType("uniqueidentifier");
@@ -74,6 +76,8 @@ namespace GolfLeaderboard.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HomeCourseId");
 
                     b.HasIndex("LeaderboardId");
 
@@ -117,9 +121,17 @@ namespace GolfLeaderboard.API.Migrations
 
             modelBuilder.Entity("GolfLeaderboard.API.Models.DomainModels.Golfer", b =>
                 {
+                    b.HasOne("GolfLeaderboard.API.Models.DomainModels.GolfCourse", "HomeCourse")
+                        .WithMany()
+                        .HasForeignKey("HomeCourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GolfLeaderboard.API.Models.DomainModels.Leaderboard", null)
                         .WithMany("Golfers")
                         .HasForeignKey("LeaderboardId");
+
+                    b.Navigation("HomeCourse");
                 });
 
             modelBuilder.Entity("GolfLeaderboard.API.Models.DomainModels.Leaderboard", b =>
