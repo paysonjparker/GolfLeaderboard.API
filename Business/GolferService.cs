@@ -108,5 +108,31 @@ namespace GolfLeaderboard.API.Business
 
             return false;
         }
+
+        public List<Models.DTO.GolferDTO.Golfer> GetAllGolfersByHomeCourse(string homeCourseName)
+        {
+            var scoreService = new ScoreService(_dbContext);
+
+            var golfers = _dbContext.Golfers.ToList();
+
+            var golfersDTO = new List<Models.DTO.GolferDTO.Golfer>();
+            foreach (var golfer in golfers)
+            {
+                if (golfer.HomeCourse == homeCourseName)
+                {
+                    golfersDTO.Add(new Models.DTO.GolferDTO.Golfer
+                    {
+                        Id = golfer.Id,
+                        Name = golfer.Name,
+                        HandicapIndex = golfer.HandicapIndex,
+                        HomeCourse = golfer.HomeCourse,
+                        Scores = scoreService.GetAllScoresByGolfer(golfer.Id),
+                    });
+                }
+            }
+
+            return golfersDTO;
+        }
+
     }
 }

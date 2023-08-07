@@ -6,6 +6,7 @@ using GolfLeaderboard.API.Models.DTO.GolferDTO;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace GolfLeaderboard.API.Controllers
 {
@@ -76,6 +77,19 @@ namespace GolfLeaderboard.API.Controllers
                 return Ok();
             }
 
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("members/{homeCourseName}")]
+        public IActionResult GetAllGolfersByHomeCourse(string homeCourseName)
+        {
+            var golfersDTO = _golferService.GetAllGolfersByHomeCourse(homeCourseName);
+
+            if(golfersDTO != null)
+            {
+                return Ok(golfersDTO);
+            }
             return BadRequest();
         }
     }
