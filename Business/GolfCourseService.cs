@@ -8,11 +8,20 @@ namespace GolfLeaderboard.API.Business
     {
         private readonly GolfLeaderboardDbContext _dbContext;
 
+        /// <summary>
+        /// Constrcutor with dbContext injection
+        /// </summary>
+        /// <param name="dbContext">DB Context</param>
         public GolfCourseService(GolfLeaderboardDbContext dbContext)
         {
             this._dbContext = dbContext;
         }
 
+        /// <summary>
+        /// Adds a new golf course to the golf course table
+        /// </summary>
+        /// <param name="addGolfCourseRequest">Golf course request</param>
+        /// <returns></returns>
         public Models.DomainModels.GolfCourse AddGolfCourse(AddGolfCourseRequest addGolfCourseRequest)
         {
             // Convert DTO to Domain Model
@@ -32,6 +41,10 @@ namespace GolfLeaderboard.API.Business
             return golfCourse;
         }
 
+        /// <summary>
+        /// Gets all golf courses from the golf course table
+        /// </summary>
+        /// <returns>A list of golf courses</returns>
         public List<Models.DTO.GolfCourseDTO.GolfCourse> GetAllGolfCourses()
         {
             var golfCourses = _dbContext.GolfCourses.ToList();
@@ -54,6 +67,11 @@ namespace GolfLeaderboard.API.Business
             return golfersDTO;
         }
 
+        /// <summary>
+        /// Gets a specific golf course by ID number
+        /// </summary>
+        /// <param name="id">ID of the golf course</param>
+        /// <returns>A golf course object</returns>
         public Models.DTO.GolfCourseDTO.GolfCourse GetGolfCourseById(Guid id)
         {
             var golfCourseDomainObject = _dbContext.GolfCourses.Find(id);
@@ -77,6 +95,11 @@ namespace GolfLeaderboard.API.Business
             return null;
         }
 
+        /// <summary>
+        /// Gets a golf course by a specific name from the database
+        /// </summary>
+        /// <param name="golfCourseName">Golf course name</param>
+        /// <returns>A golf course object</returns>
         public Models.DTO.GolfCourseDTO.GolfCourse GetGolfCourseByName(string golfCourseName)
         {
             var golfCourseDomainObject = _dbContext.GolfCourses.FirstOrDefault(golfCourse => golfCourse.Name.Equals(golfCourseName));
@@ -100,6 +123,12 @@ namespace GolfLeaderboard.API.Business
             return null;
         }
 
+        /// <summary>
+        /// Updates an exisitng golf course in the database
+        /// </summary>
+        /// <param name="id">ID number of the golf course being updated</param>
+        /// <param name="updateGolfCourseRequest">Update golf course request</param>
+        /// <returns>The newly updated golf course object</returns>
         public Models.DomainModels.GolfCourse UpdateGolfCourse(Guid id, UpdateGolfCourseRequest updateGolfCourseRequest)
         {
             var existingGolfCourse = _dbContext.GolfCourses.Find(id);
@@ -120,6 +149,11 @@ namespace GolfLeaderboard.API.Business
             return null;
         }
 
+        /// <summary>
+        /// Deletes a specfic golf course from the database
+        /// </summary>
+        /// <param name="id">ID of the golf course being deleted</param>
+        /// <returns>True if the deletion was successful, otherwise false</returns>
         public bool DeleteGolfCourse(Guid id)
         {
             var existingGolfCourse = _dbContext.GolfCourses.Find(id);
