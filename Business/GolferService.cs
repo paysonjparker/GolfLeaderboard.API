@@ -9,11 +9,20 @@ namespace GolfLeaderboard.API.Business
     {
         private readonly GolfLeaderboardDbContext _dbContext;
 
+        /// <summary>
+        /// Constructor for Golfer Service
+        /// </summary>
+        /// <param name="dbContext">DB Context</param>
         public GolferService(GolfLeaderboardDbContext dbContext)
         {
             this._dbContext = dbContext;
         }
 
+        /// <summary>
+        /// Adds a golfer to the database
+        /// </summary>
+        /// <param name="addGolferRequest">Add golfer request</param>
+        /// <returns></returns>
         public Models.DomainModels.Golfer AddGolfer(AddGolferRequest addGolferRequest)
         {
             // Convert DTO to Domain Model
@@ -31,6 +40,10 @@ namespace GolfLeaderboard.API.Business
             return golfer;
         }
 
+        /// <summary>
+        /// Gets all golfers from the database
+        /// </summary>
+        /// <returns>A list of golfers</returns>
         public List<Models.DTO.GolferDTO.Golfer> GetAllGolfers()
         {
             var scoreService = new ScoreService(_dbContext);
@@ -53,6 +66,11 @@ namespace GolfLeaderboard.API.Business
             return golfersDTO;
         }
 
+        /// <summary>
+        /// Gets a specific golfer by ID number
+        /// </summary>
+        /// <param name="id">ID of the golfer</param>
+        /// <returns>A golfer object</returns>
         public Models.DTO.GolferDTO.Golfer GetGolferById(Guid id)
         {
             var scoreService = new ScoreService(_dbContext);
@@ -76,6 +94,12 @@ namespace GolfLeaderboard.API.Business
             return null;
         }
 
+        /// <summary>
+        /// Updates an existing golfer
+        /// </summary>
+        /// <param name="id">ID of the golfer</param>
+        /// <param name="updateGolferRequest">Update golfer request</param>
+        /// <returns>The updated golfer object</returns>
         public Models.DomainModels.Golfer UpdateGolfer(Guid id, UpdateGolferRequest updateGolferRequest)
         {
             var exisitngGolfer = _dbContext.Golfers.Find(id);
@@ -94,6 +118,11 @@ namespace GolfLeaderboard.API.Business
             return null;
         }
 
+        /// <summary>
+        /// Deletes a golfer from the database
+        /// </summary>
+        /// <param name="id">ID of the golfer</param>
+        /// <returns>True i deletion was successfull, otherwise false</returns>
         public bool DeleteGolfer(Guid id)
         {
             var existingGolfer = _dbContext.Golfers.Find(id);
@@ -109,6 +138,11 @@ namespace GolfLeaderboard.API.Business
             return false;
         }
 
+        /// <summary>
+        /// Gets all golfers by a specific home golf course
+        /// </summary>
+        /// <param name="homeCourseName">Home Golf course</param>
+        /// <returns>A list of golfer objects</returns>
         public List<Models.DTO.GolferDTO.Golfer> GetAllGolfersByHomeCourse(string homeCourseName)
         {
             var scoreService = new ScoreService(_dbContext);
