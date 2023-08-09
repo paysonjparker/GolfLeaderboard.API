@@ -8,11 +8,20 @@ namespace GolfLeaderboard.API.Business
     {
         private readonly GolfLeaderboardDbContext _dbContext;
 
+        /// <summary>
+        /// Constructor for the score service
+        /// </summary>
+        /// <param name="dbContext">DB Context</param>
         public ScoreService(GolfLeaderboardDbContext dbContext)
         {
             this._dbContext = dbContext;
         }
 
+        /// <summary>
+        /// Adds a score to the database
+        /// </summary>
+        /// <param name="addScoreRequest">add Score request</param>
+        /// <returns>The newly created score</returns>
         public Models.DomainModels.Score AddScore(AddScoreRequest addScoreRequest)
         {
             // Convert DTO to Domain Model
@@ -28,6 +37,10 @@ namespace GolfLeaderboard.API.Business
             return score;
         }
 
+        /// <summary>
+        /// Gets all scores from the database
+        /// </summary>
+        /// <returns>A list of score objects</returns>
         public List<Models.DTO.ScoreDTO.Score> GetAllScores()
         {
             var scores = _dbContext.Scores.ToList();
@@ -46,6 +59,11 @@ namespace GolfLeaderboard.API.Business
             return scoresDTO;
         }
 
+        /// <summary>
+        /// Gets all scores for a specific golfer
+        /// </summary>
+        /// <param name="golferId">ID number fo the golfer the scores belong to</param>
+        /// <returns>A list of scores associated with that golfer</returns>
         public List<Models.DomainModels.Score> GetAllScoresByGolfer(Guid golferId)
         {
 
@@ -68,6 +86,12 @@ namespace GolfLeaderboard.API.Business
             return scoresDTO;
         }
 
+        /// <summary>
+        /// Updates an existing score in the database
+        /// </summary>
+        /// <param name="id">ID number of the updated score</param>
+        /// <param name="updateScoreRequest">Update score request</param>
+        /// <returns>The updated score object</returns>
         public Models.DomainModels.Score UpdateScore(Guid id, UpdateScoreRequest updateScoreRequest)
         {
             var existingScore = _dbContext.Scores.Find(id);
@@ -83,6 +107,11 @@ namespace GolfLeaderboard.API.Business
             return null;
         }
 
+        /// <summary>
+        /// Deletes an exisitng score from the database
+        /// </summary>
+        /// <param name="id">ID number of the deleted score</param>
+        /// <returns>True if deletion was successful, otherwise false</returns>
         public bool DeleteScore(Guid id)
         {
             var existingScore = _dbContext.Scores.Find(id);
