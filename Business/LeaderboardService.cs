@@ -9,11 +9,20 @@ namespace GolfLeaderboard.API.Business
     {
         private readonly GolfLeaderboardDbContext _dbContext;
 
+        /// <summary>
+        /// Constructor for Leaderboard service
+        /// </summary>
+        /// <param name="dbContext">DB Context</param>
         public LeaderboardService(GolfLeaderboardDbContext dbContext)
         {
             this._dbContext = dbContext;
         }
 
+        /// <summary>
+        /// Creates a new Leaderboard and adds it to the database
+        /// </summary>
+        /// <param name="addLeaderboardRequest">Create leaderboard request</param>
+        /// <returns>The created leaderboard object</returns>
         public Models.DomainModels.Leaderboard AddLeaderboard(AddLeaderboardRequest addLeaderboardRequest)
         {
             // Convert DTO to Domain Model
@@ -29,6 +38,10 @@ namespace GolfLeaderboard.API.Business
             return leaderboard;
         }
 
+        /// <summary>
+        /// Gets all leaderboards from the database
+        /// </summary>
+        /// <returns>A list of leaderboard objects</returns>
         public List<Models.DTO.LeaderboardDTO.Leaderboard> GetAllLeaderboards()
         {
 
@@ -48,6 +61,11 @@ namespace GolfLeaderboard.API.Business
             return leaderboardDTO;
         }
 
+        /// <summary>
+        /// Gets a specific leaderboard by ID number from the database
+        /// </summary>
+        /// <param name="id">ID number of the leaderboard</param>
+        /// <returns>The leaderboard obejct associated with that ID number</returns>
         public Models.DTO.LeaderboardDTO.Leaderboard GetLeaderboardById(Guid id)
         {
             var leaderboardDomain = _dbContext.Leaderboards.Find(id);
@@ -67,6 +85,12 @@ namespace GolfLeaderboard.API.Business
             return null;
         }
 
+        /// <summary>
+        /// Updates an exisitng leaderboard in the database
+        /// </summary>
+        /// <param name="id">ID of the updated leaderboard</param>
+        /// <param name="updateLeaderboardRequest">Update leaderboard request</param>
+        /// <returns>The updated leaderboard object</returns>
         public Models.DomainModels.Leaderboard UpdateLeaderboard(Guid id, UpdateLeaderboardRequest updateLeaderboardRequest)
         {
             var exisitngLeaderboard = _dbContext.Leaderboards.Find(id);
@@ -83,6 +107,11 @@ namespace GolfLeaderboard.API.Business
             return null;
         }
 
+        /// <summary>
+        /// Deletes a leaderboard from the database
+        /// </summary>
+        /// <param name="id">Id of the deleted leaderboard</param>
+        /// <returns>True if the deletion is successfull, otherwise false</returns>
         public bool DeleteLeaderboard(Guid id)
         {
             var existingLeaderboard = _dbContext.Leaderboards.Find(id);
@@ -98,6 +127,12 @@ namespace GolfLeaderboard.API.Business
             return false;
         }
 
+        /// <summary>
+        /// Adds a golfer to the leaderboard
+        /// </summary>
+        /// <param name="leaderboardId">ID number of the leaderboard</param>
+        /// <param name="golferId">ID of the golfer being added to the leaderboard</param>
+        /// <returns>The golfer that was added to the leaderboard</returns>
         public Models.DomainModels.Golfer AddGolferToLeaderboard(Guid leaderboardId, Guid golferId)
         {
             var scoreService = new ScoreService(_dbContext);
