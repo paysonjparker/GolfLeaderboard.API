@@ -1,5 +1,8 @@
 ﻿namespace GolfLeaderboard.API.Models.DomainModels
 {
+    /// <summary>
+    /// Golfer domain model
+    /// </summary>
     public class Golfer
     {
         public Guid Id { get; set; }
