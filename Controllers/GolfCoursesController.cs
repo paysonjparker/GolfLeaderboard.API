@@ -29,7 +29,7 @@ namespace GolfLeaderboard.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllGolfCourses() 
+        public IActionResult GetAllGolfCourses()
         {
             var golfersDTO = _golfCourseService.GetAllGolfCourses();
 
@@ -41,8 +41,8 @@ namespace GolfLeaderboard.API.Controllers
         public IActionResult GetGolfCourseById(Guid id)
         {
             var golfCourseDTO = _golfCourseService.GetGolfCourseById(id);
-            
-            if(golfCourseDTO != null)
+
+            if (golfCourseDTO != null)
             {
                 return Ok(golfCourseDTO);
             }
@@ -62,6 +62,23 @@ namespace GolfLeaderboard.API.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("names")]
+        public IActionResult GetAllGolfCourseNames()
+        {
+            var golfCoursesDTO = _golfCourseService.GetAllGolfCourses();
+            var golfCourseNames = new List<string>();
+
+            foreach(var golfCourse in golfCoursesDTO)
+            {
+                golfCourseNames.Add(golfCourse.Name);
+            }
+
+            golfCourseNames.Sort();
+
+            return Ok(golfCourseNames);
         }
 
         [HttpPut]
