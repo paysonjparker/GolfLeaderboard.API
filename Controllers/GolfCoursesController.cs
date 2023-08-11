@@ -31,9 +31,11 @@ namespace GolfLeaderboard.API.Controllers
         [HttpGet]
         public IActionResult GetAllGolfCourses()
         {
-            var golfersDTO = _golfCourseService.GetAllGolfCourses();
+            var golfCoursesDTO = _golfCourseService.GetAllGolfCourses();
 
-            return Ok(golfersDTO);
+            golfCoursesDTO = golfCoursesDTO.OrderBy(x => x.Name).ToList();
+
+            return Ok(golfCoursesDTO);
         }
 
         [HttpGet]

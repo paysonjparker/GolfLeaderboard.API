@@ -35,6 +35,8 @@ namespace GolfLeaderboard.API.Controllers
         {
             var golfersDTO = _golferService.GetAllGolfers();
 
+            golfersDTO = golfersDTO.OrderBy(x => x.Name).ToList();
+
             return Ok(golfersDTO);
         }
 
